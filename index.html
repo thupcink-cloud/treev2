@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Plant Care & Gamification System</title>
     
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
     
@@ -19,7 +22,7 @@
 <body>
 
     <div class="app-layout">
-        <!-- เมนูด้านซ้าย/ล่าง -->
+        <!-- เมนูด้านซ้าย (Desktop) / ด้านล่าง (Mobile) -->
         <nav class="navbar">
             <div class="nav-brand">
                 <i class="fa-solid fa-seedling"></i> <span>Plant Care</span>
@@ -31,11 +34,14 @@
                 <li class="nav-item" onclick="UI.switchTab('plantsTab', this)">
                     <i class="fa-solid fa-leaf"></i> <span>ต้นไม้ของฉัน</span>
                 </li>
+                <li class="nav-item" onclick="UI.switchTab('gachaTab', this)">
+                    <i class="fa-solid fa-box-open"></i> <span>สุ่มซอง</span>
+                </li>
                 <li class="nav-item" onclick="UI.switchTab('busyTab', this)">
-                    <i class="fa-solid fa-calendar-xmark"></i> <span>เวลาที่ไม่ว่าง</span>
+                    <i class="fa-solid fa-calendar-xmark"></i> <span>วันไม่ว่าง</span>
                 </li>
                 <li class="nav-item" onclick="UI.switchTab('scheduleTab', this)">
-                    <i class="fa-solid fa-droplet"></i> <span>ตาราง & เลเวล</span>
+                    <i class="fa-solid fa-droplet"></i> <span>ตารางรดน้ำ</span>
                 </li>
             </ul>
         </nav>
@@ -45,9 +51,16 @@
             
             <!-- 📌 หน้าที่ 1: Dashboard -->
             <section id="homeTab" class="tab-content active">
-                <header class="page-header">
-                    <h1>🏠 หน้าหลัก (Dashboard)</h1>
-                    <p>สรุปภาพรวมการดูแลต้นไม้และสถานะประจำวัน</p>
+                <header class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div>
+                        <h1>🏠 หน้าหลัก (Dashboard)</h1>
+                        <p>สรุปภาพรวมการดูแลต้นไม้และสถานะประจำวัน</p>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button onclick="UI.switchTab('gachaTab', document.querySelector('.nav-links li:nth-child(3)'))" class="btn btn-success">
+                            🎁 เปิดซองสุ่มต้นไม้ (1 ครั้ง/วัน)
+                        </button>
+                    </div>
                 </header>
                 
                 <div class="summary-cards">
@@ -69,14 +82,14 @@
                         <i class="fa-solid fa-star card-icon"></i>
                         <div>
                             <h3 id="dashPetLevel">Lv. 1</h3>
-                            <p>ระดับเลเวลตัวการ์ตูน</p>
+                            <p>ระดับเลเวลตัวละคร</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="card today-tasks-card">
                     <h2><i class="fa-solid fa-list-check"></i> รายการที่ต้องรดน้ำวันนี้</h2>
-                    <ul id="todayTasksList" class="task-list">
+                    <ul id="todayTasksList" class="task-list" style="list-style: none; padding-top: 10px;">
                         <li>กำลังโหลดรายการ...</li>
                     </ul>
                 </div>
@@ -94,7 +107,7 @@
                     <form id="addPlantForm">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="plantName">ชื่อต้นไม้ (ชื่อเรียก):</label>
+                                <label for="plantName">ชื่อต้นไม้:</label>
                                 <input type="text" id="plantName" placeholder="เช่น น้องเขียวหน้าบ้าน" required>
                             </div>
                             <div class="form-group">
@@ -112,13 +125,48 @@
 
                 <div class="card">
                     <h2>รายการต้นไม้ทั้งหมด</h2>
-                    <div id="plantGallery" class="plant-gallery">
+                    <div id="plantGallery" class="plant-gallery" style="margin-top: 15px;">
                         <p class="text-muted">ยังไม่มีข้อมูลต้นไม้</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 📌 หน้าที่ 3: Busy Schedule -->
+            <!-- 📌 หน้าที่ 3: Gacha (ระบบสุ่ม + คูลดาวน์ 1 ครั้ง/วัน) -->
+            <section id="gachaTab" class="tab-content">
+                <header class="page-header">
+                    <h1>🎁 สุ่มซองต้นไม้ประจำวัน</h1>
+                    <p>เปิดซองเพื่อลุ้นรับสัตว์เลี้ยงต้นไม้ (จำกัดสิทธิ์ 1 ครั้งต่อ 24 ชั่วโมง)</p>
+                </header>
+
+                <div class="card" style="text-align: center; padding: 35px 20px;">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap; margin-bottom: 25px;">
+                        
+                        <div style="text-align: left; background: #f8f9fa; padding: 20px; border-radius: 14px; border: 1px solid #e0e0e0; min-width: 240px;">
+                            <h3 style="margin-bottom: 12px; color: #2e7d32; font-size: 1.1rem;"><i class="fa-solid fa-chart-pie"></i> อัตราการออก</h3>
+                            <p style="font-size: 0.9rem; margin: 8px 0;">🌻 น้องทานตะวัน: <b>33.33%</b></p>
+                            <p style="font-size: 0.9rem; margin: 8px 0;">🍇 น้ององุ่น: <b>33.33%</b></p>
+                            <p style="font-size: 0.9rem; margin: 8px 0;">🎋 น้องไม้ไผ่: <b>33.33%</b></p>
+                            <p style="font-size: 0.78rem; color: #7f8c8d; margin-top: 10px;">*หากได้ตัวซ้ำ ระบบจะเปลี่ยนเป็น +30 EXP อัตโนมัติ</p>
+                        </div>
+
+                        <div class="gacha-pack-container" style="background: #e8f5e9; padding: 15px; border-radius: 20px;">
+                            <img src="images/gacha_pack.png" alt="ซองสุ่มต้นไม้" id="gachaPackImage" style="width: 200px; height: auto; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); display: block; object-fit: cover;" onerror="this.src='https://via.placeholder.com/200x280?text=Gacha+Pack'">
+                        </div>
+                    </div>
+
+                    <div class="gacha-action-area" style="margin-top: 20px;">
+                        <button onclick="GachaSystem.executeGacha()" id="btnExecuteGacha" class="btn btn-success" style="padding: 14px 35px; border-radius: 30px; font-size: 1.15rem; font-weight: bold;">
+                            ✨ กดสุ่มซองต้นไม้
+                        </button>
+                        <!-- พื้นที่แสดงเวลานับถอยหลังคูลดาวน์ -->
+                        <div id="gachaCooldownText" style="margin-top: 15px; font-size: 0.95rem;"></div>
+                    </div>
+                    
+                    <div id="gachaResultContainer" style="margin-top: 25px;"></div>
+                </div>
+            </section>
+
+            <!-- 📌 หน้าที่ 4: Busy Schedule -->
             <section id="busyTab" class="tab-content">
                 <header class="page-header">
                     <h1>📅 วันที่ติดธุระ / ไม่ว่าง (Busy Schedule)</h1>
@@ -137,14 +185,6 @@
                                 <label for="busyDays">จำนวนวันที่ติดธุระ (วัน):</label>
                                 <input type="number" id="busyDays" min="1" max="30" value="1" required>
                             </div>
-                            <div class="form-group">
-                                <label for="busyTimeSlot">ช่วงเวลา:</label>
-                                <select id="busyTimeSlot" class="form-select">
-                                    <option value="ทั้งวัน">ทั้งวัน</option>
-                                    <option value="ช่วงเช้า">ช่วงเช้า (06:00 - 12:00)</option>
-                                    <option value="ช่วงเย็น">ช่วงเย็น (13:00 - 18:00)</option>
-                                </select>
-                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> บันทึกวันติดธุระ</button>
                     </form>
@@ -152,38 +192,42 @@
 
                 <div class="card">
                     <h2>รายการวันที่ไม่ว่างที่บันทึกไว้</h2>
-                    <ul id="busyDatesList" class="busy-list">
+                    <ul id="busyDatesList" class="busy-list" style="list-style: none; margin-top: 10px;">
                         <li>ยังไม่มีบันทึกวันติดธุระ</li>
                     </ul>
                 </div>
             </section>
 
-            <!-- 📌 หน้าที่ 4: Schedule & Pet -->
+            <!-- 📌 หน้าที่ 5: Schedule & Pet -->
             <section id="scheduleTab" class="tab-content">
                 <header class="page-header">
-                    <h1>💧 ตารางการรดน้ำ & ตัวการ์ตูน (Schedule & Pet)</h1>
-                    <p>ดูตารางที่ AI คำนวณหลีกเลี่ยงวันติดธุระ พร้อมสะสม EXP ตัวการ์ตูน</p>
+                    <h1>💧 ตารางการรดน้ำ & ตัวละคร (Schedule & Pet)</h1>
+                    <p>ดูตารางที่ AI คำนวณหลีกเลี่ยงวันติดธุระ พร้อมสะสม EXP ตัวละคร</p>
                 </header>
 
-                <!-- สัตว์เลี้ยง -->
+                <div style="margin-bottom: 1.2rem; display: flex; justify-content: flex-end;">
+                    <button onclick="UI_Inventory.togglePetInventoryModal()" class="btn btn-success" style="background: linear-gradient(135deg, #0288d1, #26c6da);">
+                        <i class="fa-solid fa-backpack"></i> กระเป๋าเลือกสัตว์เลี้ยงต้นไม้
+                    </button>
+                </div>
+
                 <div class="card pet-card">
                     <div class="pet-avatar-container">
                         <div id="petAvatar" class="pet-avatar state-lvl1">🌱</div>
                     </div>
                     <div class="pet-info">
-                        <h2 id="petName">น้องต้นไม้</h2>
+                        <h2 id="petName" style="color: #1b5e20;">น้องต้นไม้</h2>
                         <div class="level-badge" id="petLevelBadge">Level 1</div>
                         <div class="exp-bar-container">
                             <div id="expBarFill" class="exp-bar-fill" style="width: 0%;"></div>
                         </div>
-                        <p id="expText" class="exp-text">EXP: 0 / 100</p>
+                        <p id="expText" class="exp-text" style="font-weight: 500; color: #555;">EXP: 0 / 100</p>
                     </div>
                 </div>
 
-                <!-- ตารางรดน้ำ -->
                 <div class="card">
                     <h2><i class="fa-solid fa-wand-magic-sparkles"></i> ตารางรดน้ำที่ AI จัดให้อัตโนมัติ</h2>
-                    <div class="table-wrapper">
+                    <div class="table-wrapper" style="margin-top: 15px;">
                         <table class="schedule-table">
                             <thead>
                                 <tr>
@@ -208,12 +252,13 @@
         </main>
     </div>
 
-    <!-- เรียกใช้สคริปต์ตามลำดับที่ถูกต้อง -->
+    <!-- สคริปต์การทำงาน -->
     <script src="config.js"></script>
     <script src="auth.js"></script>
     <script src="database.js"></script>
     <script src="ai.js"></script>
     <script src="ui.js"></script>
+    <script src="gacha.js"></script>
     <script src="app.js"></script>
     <script src="line-bot.js"></script>
 </body>
